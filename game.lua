@@ -16,7 +16,7 @@ local debug_projectile_damage = 20
 local debug_max_health = 100
 local debug_starting_health = 100
 
-function spawn_enemy_gui(entity)
+function spawn_enemy_gui(self, entity)
     if (ImGui.Begin("Spawn Enemy")) then
         debug_x_position = ImGui.InputInt("Spawn X", debug_x_position)
         debug_y_position = ImGui.InputInt("Spawn Y", debug_y_position)
@@ -57,7 +57,7 @@ function spawn_enemy_gui(entity)
                         height = 32,
                         layer = 1
                     },
-                    boxcollider = {
+                    box_collider = {
                         width = 32,
                         height = 32,
                         offset = { x = 0, y = 0 }

@@ -50,7 +50,7 @@ local document = {
     entities = {},
     components = {
         script = {
-            on_update = function(entity, delta_time, elapsed_time) 
+            on_update = function(self, entity, delta_time) 
                 if is_key_pressed("w") and is_key_held("ctrl") then
                     log("Ctrl+W key pressed. Write tilemap to file.")
                     save_grid("tilemap.map", tile_grid)
@@ -87,7 +87,7 @@ for i=0, edit_grid_num_tiles_high-1 do
                     src_rect_x = 0,
                     src_rect_y = 0
                 },
-                boxcollider = {
+                box_collider = {
                     width = grid_texture_height,
                     height = grid_texture_width,
                     offset = { x = 0, y = 0 }
@@ -95,7 +95,7 @@ for i=0, edit_grid_num_tiles_high-1 do
                 button = {
                     is_active = true,
                     my_index = index,
-                    on_click_script = 
+                    on_click = 
                         function(self, entity)
                             log("Clicked tile with index "..self.my_index)
                             if selected_tile_index ~= nil then
@@ -164,7 +164,7 @@ for i=0, select_grid_num_tiles_high-1 do
                     src_rect_x = j * 32,
                     src_rect_y = i * 32
                 },
-                boxcollider = {
+                box_collider = {
                     width = grid_texture_height,
                     height = grid_texture_width,
                     offset = { x = 0, y = 0 }
@@ -172,7 +172,7 @@ for i=0, select_grid_num_tiles_high-1 do
                 button = {
                     is_active = true,
                     tile_index = j + i * select_grid_num_tiles_wide,
-                    on_click_script = 
+                    on_click = 
                         function(self, entity)
                             log("Clicked selector with tile index "..self.tile_index)
                             selected_tile_index = self.tile_index

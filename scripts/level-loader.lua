@@ -79,6 +79,33 @@ local function load_level(levelNumber)
     -- Load entities
     local entities = current_level.entities
     for _, v in ipairs(entities) do
+        v["entities"] = {
+            {
+                components = {
+                    transform = {
+                        position = { x = 0, y = -10 },
+                        scale = { x = 1.0, y = 1.0 },
+                        rotation = 0.0,
+                    },
+                    text_label = {
+                        text = "100%",
+                        font_id = "arial-font-10",
+                        color = { r = 255, g = 255, b = 255, a = 255 },
+                        is_fixed = false,
+                        layer = 5
+                    },
+                    square = {
+                        position = { x = 0, y = 0 },
+                        width = 50,
+                        height = 20,
+                        color = { r = 255, g = 0, b = 0, a = 255 },
+                        is_fixed = false,
+                        layer = 5
+                    }
+                }
+            }
+        }
+
         load_entity(v)
     end
 end

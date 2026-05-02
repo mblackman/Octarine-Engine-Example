@@ -53,7 +53,7 @@ current_level = {
                     num_frames = 2,
                     speed_rate = 10 -- fps
                 },
-                boxcollider = {
+                box_collider = {
                     width = 32,
                     height = 25,
                     offset = { x = 0, y = 5 }
@@ -62,7 +62,7 @@ current_level = {
                     max_health = 100
                 },
                 projectile_emitter = {
-                    projectile_velocity = { x = 200, y = 200 },
+                    projectile_velocity = { x = 100, y = 100 },
                     projectile_duration = 10, -- seconds
                     repeat_frequency = 0, -- seconds
                     hit_damage = 10,
@@ -91,7 +91,7 @@ current_level = {
                     height = 32,
                     layer = 2
                 },
-                boxcollider = {
+                box_collider = {
                     width = 25,
                     height = 18,
                     offset = { x = 0, y = 7 }
@@ -123,7 +123,7 @@ current_level = {
                     height = 32,
                     layer = 2
                 },
-                boxcollider = {
+                box_collider = {
                     width = 25,
                     height = 18,
                     offset = { x = 0, y = 7 }
@@ -139,7 +139,7 @@ current_level = {
                     friendly = false
                 },
                 script = {
-                    on_update = function(entity, delta_time, elapsed_time) 
+                    on_update = function(self, entity, delta_time) 
                         -- log("Truck update script")
                     end
                 }
@@ -150,7 +150,7 @@ current_level = {
             group = "enemies",
             components = {
                 transform = {
-                    position = { x = 500, y = 497 },
+                    position = { x = 500, y = 250 },
                     scale = { x = 1.0, y = 1.0 },
                     rotation = 0.0, -- degrees
                 },
@@ -160,7 +160,7 @@ current_level = {
                     height = 32,
                     layer = 2
                 },
-                boxcollider = {
+                box_collider = {
                     width = 25,
                     height = 18,
                     offset = { x = 0, y = 7 }
@@ -176,10 +176,13 @@ current_level = {
                     friendly = false
                 },
                 script = {
-                    on_update = function(entity, delta_time, elapsed_time) 
-                        -- log("Sin Truck update script")
-                        local new_x = elapsed_time * 0.09
-                        local new_y = 200 + (math.sin(elapsed_time * 0.001) * 50)
+                    elapsed_time = 0.0,
+                    on_update = function(self, entity, delta_time) 
+                        self.elapsed_time = self.elapsed_time + delta_time
+                        -- Need to fix tracking of elapsed time
+                        local change = self.elapsed_time * 1000
+                        local new_x = change * 0.09
+                        local new_y = 200 + (math.sin(change * 0.001) * 50)
                         set_position(entity, new_x, new_y)
                     end
                 }
