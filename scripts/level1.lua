@@ -138,11 +138,6 @@ current_level = {
                     hit_damage = 20,
                     friendly = false
                 },
-                script = {
-                    on_update = function(self, entity, delta_time) 
-                        -- log("Truck update script")
-                    end
-                }
             }
         },
         {

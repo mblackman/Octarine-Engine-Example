@@ -91,21 +91,66 @@ function create_debug_gui()
     load_entity(spawn_enemy_gui)
 end
 
-run_map_editor = false
-log("Starting game...")
-if run_map_editor then
-    log("Running map editor...")
-    local map_editor_path = get_asset_path("scripts/map-editor.lua")
-    log("Loading map editor script: " .. map_editor_path)
-    dofile(map_editor_path)
-    map_editor.load()
-else
-    log("Running game...")
-    local level_loader_path = get_asset_path("scripts/level-loader.lua")
-    log("Loading level loader script: " .. level_loader_path)
-    dofile(level_loader_path)
+local bootstrapper_script = {
+    test_selected = 0,
+    show_menu = true,
+    tests = {"Main Game", "Map Editor", "Stress Test", "Overlap Test"},
+    on_update = function(self, entity, delta_time)
+        -- Toggle the menu when Escape is pressed
+        if is_key_pressed("escape") then
+            self.show_menu = not self.show_menu
+        end
+    end,
+    on_debug_gui = function(self, entity)
+        if self.show_menu then
+            if (ImGui.Begin("Mode Selector")) then
+                local clicked
+                self.test_selected, clicked = ImGui.Combo("Select Mode", self.test_selected, self.tests, 4)
+                
+                if ImGui.Button("Load Mode") then
+                    self.show_menu = false
+                    log("Loading mode index: " .. self.test_selected)
+                    
+                    -- Call an engine function to clear the current map/entities to avoid overlaps
+                    if clear_scene then
+                        clear_scene()
+                        -- Re-initialize the bootstrapper so it survives the clear
+                        load_entity({ components = { script = bootstrapper_script } })
+                    else
+                        log("WARNING: Implement a clear_scene() binding in C++ to prevent overlap!")
+                    end
+                    
+                    if self.test_selected == 0 then
+                        -- Main Game
+                        local level_loader_path = get_asset_path("scripts/level-loader.lua")
+                        dofile(level_loader_path)
+                        level_loader.load_level(1)
+                        create_debug_gui()
+                    elseif self.test_selected == 1 then
+                        -- Map Editor
+                        local map_editor_path = get_asset_path("scripts/map-editor.lua")
+                        dofile(map_editor_path)
+                        map_editor.load()
+                    elseif self.test_selected == 2 then
+                        -- Stress Test
+                        local stress_test_path = get_asset_path("scripts/stress-test.lua")
+                        local stress_test = dofile(stress_test_path)
+                        stress_test.run()
+                    elseif self.test_selected == 3 then
+                        -- Overlap Test
+                        local overlap_test_path = get_asset_path("scripts/overlap-test.lua")
+                        local overlap_test = dofile(overlap_test_path)
+                        overlap_test.run()
+                    end
+                end
+            end
+            ImGui.End()
+        end
+    end
+}
 
-    level_loader.load_level(1)
-    create_debug_gui()
-    log("Game started successfully.")
-end
+log("Starting game engine bootstrapper...")
+local bootstrapper_entity = {
+    components = { script = bootstrapper_script }
+}
+load_entity(bootstrapper_entity)
