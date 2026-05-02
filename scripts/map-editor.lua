@@ -37,7 +37,7 @@ local function save_grid(filename, grid)
         end
         file:close()
     else
-        print("Error opening file for writing: " .. filename)
+        log("Error opening file for writing: " .. filename)
     end
 end
 
@@ -49,17 +49,18 @@ local document = {
     },
     entities = {},
     components = {
-        on_update_script = 
-            function(entity, delta_time, elapsed_time) 
+        script = {
+            on_update = function(entity, delta_time, elapsed_time) 
                 if is_key_pressed("w") and is_key_held("ctrl") then
-                    print("Ctrl+W key pressed. Write tilemap to file.")
+                    log("Ctrl+W key pressed. Write tilemap to file.")
                     save_grid("tilemap.map", tile_grid)
                 end
                 if is_key_pressed("q") and is_key_held("ctrl") then
-                    print("Ctrl+Q key pressed. Quit game.")
+                    log("Ctrl+Q key pressed. Quit game.")
                     quit_game()
                 end
             end
+        }
     }
 }
 
@@ -96,7 +97,7 @@ for i=0, edit_grid_num_tiles_high-1 do
                     my_index = index,
                     on_click_script = 
                         function(self, entity)
-                            print("Clicked tile with index "..self.my_index)
+                            log("Clicked tile with index "..self.my_index)
                             if selected_tile_index ~= nil then
                                 local tile_index = self.my_index
                                 local src_rect_x = selected_tile_index % select_grid_num_tiles_wide * grid_texture_width
@@ -106,10 +107,10 @@ for i=0, edit_grid_num_tiles_high-1 do
                                 set_sprite_src_rect(entity, src_rect_x, src_rect_y)
 
                                 -- Update the tilemap file
-                                print("Updating tilemap file with new tile index "..selected_tile_index)
+                                log("Updating tilemap file with new tile index "..selected_tile_index)
                                 tile_grid[tile_index] = selected_tile_index
-                                print("src_rect_x: "..src_rect_x)
-                                print("src_rect_y: "..src_rect_y)
+                                log("src_rect_x: "..src_rect_x)
+                                log("src_rect_y: "..src_rect_y)
                             end
                         end
                 }
@@ -173,7 +174,7 @@ for i=0, select_grid_num_tiles_high-1 do
                     tile_index = j + i * select_grid_num_tiles_wide,
                     on_click_script = 
                         function(self, entity)
-                            print("Clicked selector with tile index "..self.tile_index)
+                            log("Clicked selector with tile index "..self.tile_index)
                             selected_tile_index = self.tile_index
                         end
                 }

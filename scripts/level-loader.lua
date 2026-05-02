@@ -27,7 +27,7 @@ end
 local function load_level(levelNumber)
     -- Load assets
     level_path = get_asset_path("scripts/level" .. levelNumber .. ".lua")
-    print("Loading level script: " .. level_path)
+    log("Loading level script: " .. level_path)
     dofile(level_path)
 
     local assets = current_level.assets
@@ -43,7 +43,7 @@ local function load_level(levelNumber)
     local tile_size = tilemap.tile_size
     local scale = tilemap.scale
 
-    print("Loading tilemap from file: " .. map_file)
+    log("Loading tilemap from file: " .. map_file)
 
     local lines = read_file_lines(map_file)
     local row_number = 0

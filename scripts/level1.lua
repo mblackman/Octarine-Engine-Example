@@ -138,10 +138,11 @@ current_level = {
                     hit_damage = 20,
                     friendly = false
                 },
-                on_update_script = 
-                    function(entity, delta_time, elapsed_time) 
-                        -- print("Truck update script")
+                script = {
+                    on_update = function(entity, delta_time, elapsed_time) 
+                        -- log("Truck update script")
                     end
+                }
             }
         },
         {
@@ -174,13 +175,15 @@ current_level = {
                     hit_damage = 20,
                     friendly = false
                 },
-                on_update_script = 
-                    function(entity, delta_time, elapsed_time) 
-                        -- print("Sin Truck update script")
+                script = {
+                    on_update = function(entity, delta_time, elapsed_time) 
+                        -- log("Sin Truck update script")
                         local new_x = elapsed_time * 0.09
                         local new_y = 200 + (math.sin(elapsed_time * 0.001) * 50)
                         set_position(entity, new_x, new_y)
                     end
+                }
+                    
             }
         }
     }
