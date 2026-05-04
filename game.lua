@@ -44,7 +44,7 @@ function spawn_enemy_gui(self, entity)
         if ImGui.Button("Spawn Enemy") then
             log("Spawning enemy at (" .. debug_x_position .. ", " .. debug_y_position .. ") with scale " .. debug_scale)
             local enemy_entity = {
-                group = "enemies",
+                tag = "enemies",
                 components = {
                     transform = {
                         position = { x = debug_x_position, y = debug_y_position },
@@ -84,11 +84,11 @@ end
 
 function create_debug_gui()
     log("Creating debug GUI...")
-    spawn_enemy_gui = {
+    spawn_enemy_gui_entity = {
         components = { script = { on_debug_gui = spawn_enemy_gui } }
     }
 
-    load_entity(spawn_enemy_gui)
+    load_entity(spawn_enemy_gui_entity)
 end
 
 local bootstrapper_script = {

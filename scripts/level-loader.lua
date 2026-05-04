@@ -1,8 +1,8 @@
 -- level-loader.lua
 
 local function create_tile_entity(tile_texture_id, tile_x, tile_y, scale, tile_width, tile_height, tile_rect_x, tile_rect_y)
-    tile = {
-        group = "tiles",
+    local tile = {
+        tag = "tiles",
         components = {
             transform = {
                 position = { x = tile_x, y = tile_y },
@@ -26,7 +26,7 @@ end
 -- Define a global function to load game data
 local function load_level(levelNumber)
     -- Load assets
-    level_path = get_asset_path("scripts/level" .. levelNumber .. ".lua")
+    local level_path = get_asset_path("scripts/level" .. levelNumber .. ".lua")
     log("Loading level script: " .. level_path)
     dofile(level_path)
 

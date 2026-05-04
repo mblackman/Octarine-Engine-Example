@@ -69,8 +69,8 @@ local index = 0
 -- Tile map
 for i=0, edit_grid_num_tiles_high-1 do
     for j=0, edit_grid_num_tiles_wide-1 do
-        x_position = j * grid_texture_width * edit_grid_scale
-        y_position = i * grid_texture_height * edit_grid_scale
+        local x_position = j * grid_texture_width * edit_grid_scale
+        local y_position = i * grid_texture_height * edit_grid_scale
         document.entities[index] = {
             components = {
                 transform = {

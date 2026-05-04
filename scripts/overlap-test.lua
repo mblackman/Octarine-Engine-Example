@@ -4,7 +4,7 @@ function overlap_test.run()
     load_asset({ type = "texture", id = "tank-texture", file = "images/tank-tiger-up.png" })
 
     local left = {
-        group = "enemies",
+        tag = "enemies",
         mask = 2,
         components = {
             transform = {
@@ -30,7 +30,7 @@ function overlap_test.run()
         }
     }
     local right = {
-        group = "enemies",
+        tag = "enemies",
         mask = 2,
         components = {
             transform = {

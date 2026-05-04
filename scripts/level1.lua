@@ -30,7 +30,7 @@ current_level = {
     entities = {
         {
             -- Player
-            tag = "player",
+            tag = { "player", "test" },
             components = {
                 transform = {
                     position = { x = 242, y = 110 },
@@ -78,7 +78,7 @@ current_level = {
         },
         {
             -- Tank
-            group = "enemies",
+            tag = "enemies",
             components = {
                 transform = {
                     position = { x = 200, y = 497 },
@@ -110,7 +110,7 @@ current_level = {
         },
         {
             -- Truck
-            group = "enemies",
+            tag = "enemies",
             components = {
                 transform = {
                     position = { x = 500, y = 497 },
@@ -142,7 +142,7 @@ current_level = {
         },
         {
             -- Truck Sin
-            group = "enemies",
+            tag = "enemies",
             components = {
                 transform = {
                     position = { x = 500, y = 250 },

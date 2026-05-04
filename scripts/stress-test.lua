@@ -8,7 +8,7 @@ function stress_test.run()
     for i = 0, game_window_width, 32 do
         for j = 0, game_window_height, 32 do
             local shooter = {
-                group = "enemies",
+                tag = "enemies",
                 mask = 2,
                 components = {
                     transform = {
