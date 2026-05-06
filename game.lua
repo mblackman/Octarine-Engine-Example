@@ -49,7 +49,7 @@ function spawn_enemy_gui(self, entity)
                     transform = {
                         position = { x = debug_x_position, y = debug_y_position },
                         scale = { x = debug_scale, y = debug_scale },
-                        rotation = rotation,
+                        rotation = debug_rotation,
                     },
                     sprite = {
                         texture_asset_id = sprites[debug_sprite_index + 1],

@@ -99,7 +99,7 @@ local function load_level(levelNumber)
                         width = 50,
                         height = 20,
                         color = { r = 255, g = 0, b = 0, a = 255 },
-                        is_fixed = false,
+                        fixed = false,
                         layer = 5
                     }
                 }

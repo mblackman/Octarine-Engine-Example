@@ -10,7 +10,8 @@ current_level = {
         { type = "texture", id = "truck-texture",    file = "images/truck-ford-up.png" },
         { type = "texture", id = "bullet-texture",  file = "images/bullet.png" },
         { type = "font"   , id = "arial-font-5",    file = "fonts/arial.ttf", font_size = 5 },
-        { type = "font"   , id = "arial-font-10",   file = "fonts/arial.ttf", font_size = 10 }
+        { type = "font"   , id = "arial-font-10",   file = "fonts/arial.ttf", font_size = 10 },
+        { type = "audio_clip"   , id = "helicopter",   file = "sounds/helicopter.wav" }
     },
 
     ----------------------------------------------------
@@ -73,6 +74,16 @@ current_level = {
                 },
                 camera_follow = {
                     follow = true
+                },
+                script = {
+                    elapsed_time = 0.0,
+                    on_update = function(self, entity, delta_time) 
+                        self.elapsed_time = self.elapsed_time + delta_time
+                        if (self.elapsed_time > 1) then
+                            play_sound("helicopter")
+                            self.elapsed_time = 0
+                        end
+                    end
                 }
             }
         },
@@ -172,7 +183,7 @@ current_level = {
                 },
                 script = {
                     elapsed_time = 0.0,
-                    on_update = function(self, entity, delta_time) 
+                    on_update = function(self, entity, delta_time)
                         self.elapsed_time = self.elapsed_time + delta_time
                         -- Need to fix tracking of elapsed time
                         local change = self.elapsed_time * 1000
@@ -181,7 +192,6 @@ current_level = {
                         set_position(entity, new_x, new_y)
                     end
                 }
-                    
             }
         }
     }

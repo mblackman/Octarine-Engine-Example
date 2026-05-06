@@ -92,7 +92,7 @@ for i=0, edit_grid_num_tiles_high-1 do
                     height = grid_texture_width,
                     offset = { x = 0, y = 0 }
                 },
-                button = {
+                ui_button = {
                     is_active = true,
                     my_index = index,
                     on_click = 
@@ -169,7 +169,7 @@ for i=0, select_grid_num_tiles_high-1 do
                     height = grid_texture_width,
                     offset = { x = 0, y = 0 }
                 },
-                button = {
+                ui_button = {
                     is_active = true,
                     tile_index = j + i * select_grid_num_tiles_wide,
                     on_click = 
