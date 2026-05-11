@@ -150,6 +150,43 @@ local bootstrapper_script = {
 }
 
 log("Starting game engine bootstrapper...")
+
+-- If the engine was launched with --startup-mode, skip the menu and run that mode
+-- directly. Used by automated benchmarks to bypass the interactive selector.
+local mode_to_index = {
+    main = 0,
+    map_editor = 1,
+    stress = 2,
+    overlap = 3,
+}
+local requested_mode = oct_startup_mode
+if requested_mode and requested_mode ~= "" then
+    local idx = mode_to_index[requested_mode]
+    if idx ~= nil then
+        log("Auto-launching startup mode: " .. requested_mode)
+        if idx == 2 then
+            local stress_test_path = get_asset_path("scripts/stress-test.lua")
+            local stress_test = dofile(stress_test_path)
+            stress_test.run()
+        elseif idx == 3 then
+            local overlap_test_path = get_asset_path("scripts/overlap-test.lua")
+            local overlap_test = dofile(overlap_test_path)
+            overlap_test.run()
+        elseif idx == 1 then
+            local map_editor_path = get_asset_path("scripts/map-editor.lua")
+            dofile(map_editor_path)
+            map_editor.load()
+        else
+            local level_loader_path = get_asset_path("scripts/level-loader.lua")
+            dofile(level_loader_path)
+            level_loader.load_level(1)
+        end
+        return
+    else
+        log("WARNING: Unknown startup mode '" .. requested_mode .. "', falling back to menu")
+    end
+end
+
 local bootstrapper_entity = {
     components = { script = bootstrapper_script }
 }

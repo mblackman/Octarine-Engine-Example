@@ -24,7 +24,10 @@ function stress_test.run()
                     },
                     projectile_emitter = {
                         projectile_velocity = { x = math.random(-100, 100), y = math.random(-100, 100) },
-                        projectile_duration = 120,
+                        -- Short lifetime so the scene reaches a stable ~20-bullets-per-shooter
+                        -- steady state in ~2s — old 120s value never reached steady state in a
+                        -- realistic bench window, leaving runs measuring only the ramp.
+                        projectile_duration = 2,
                         repeat_frequency = .1,
                         hit_damage = 20,
                         friendly = false,
