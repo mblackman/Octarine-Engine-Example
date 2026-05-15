@@ -20,7 +20,7 @@ function stress_test.run()
 
             local shooter = {
                 tag = "enemies",
-                mask = 2,
+                entity_mask = 2,
                 components = {
                     transform = {
                         position = { x = i, y = j },
@@ -36,8 +36,7 @@ function stress_test.run()
                     box_collider = {
                         width = 32,
                         height = 32,
-                        offset = { x = 0, y = 0 },
-                        collision_mask = 2
+                        offset = { x = 0, y = 0 }
                     },
                     health = {
                         max_health = 100,
@@ -52,7 +51,7 @@ function stress_test.run()
                         repeat_frequency = frequency,
                         hit_damage = 20,
                         friendly = false,
-                        collision_mask = 4,
+                        collision_mask = 2,
                         -- Spread the first shot across [0, frequency) to avoid a massive
                         -- spike of ~2074 entity spawns on a single frame.
                         countdown_timer = initial_delay

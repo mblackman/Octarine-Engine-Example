@@ -31,7 +31,8 @@ current_level = {
     entities = {
         {
             -- Player
-            tag = { "player", "test" },
+            tag = { "player" },
+            entity_mask = 1,
             components = {
                 transform = {
                     position = { x = 242, y = 110 },
@@ -67,7 +68,8 @@ current_level = {
                     projectile_duration = 10, -- seconds
                     repeat_frequency = 0, -- seconds
                     hit_damage = 10,
-                    friendly = true
+                    friendly = true,
+                    collision_mask = 2
                 },
                 keyboard_controller = {
                     velocity = 80
@@ -90,6 +92,7 @@ current_level = {
         {
             -- Tank
             tag = "enemies",
+            entity_mask = 2,
             components = {
                 transform = {
                     position = { x = 200, y = 497 },
@@ -115,13 +118,15 @@ current_level = {
                     projectile_duration = 2, -- seconds
                     repeat_frequency = 1, -- seconds
                     hit_damage = 20,
-                    friendly = false
+                    friendly = false,
+                    collision_mask = 1
                 }
             }
         },
         {
             -- Truck
             tag = "enemies",
+            entity_mask = 2,
             components = {
                 transform = {
                     position = { x = 500, y = 497 },
@@ -147,13 +152,15 @@ current_level = {
                     projectile_duration = 2, -- seconds
                     repeat_frequency = 1, -- seconds
                     hit_damage = 20,
-                    friendly = false
+                    friendly = false,
+                    collision_mask = 1
                 },
             }
         },
         {
             -- Truck Sin
             tag = "enemies",
+            entity_mask = 2,
             components = {
                 transform = {
                     position = { x = 500, y = 250 },
@@ -179,7 +186,8 @@ current_level = {
                     projectile_duration = 2, -- seconds
                     repeat_frequency = 1, -- seconds
                     hit_damage = 20,
-                    friendly = false
+                    friendly = false,
+                    collision_mask = 1
                 },
                 script = {
                     elapsed_time = 0.0,
