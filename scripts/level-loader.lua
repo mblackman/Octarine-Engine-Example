@@ -3,6 +3,7 @@
 local function create_tile_entity(tile_texture_id, tile_x, tile_y, scale, tile_width, tile_height, tile_rect_x, tile_rect_y)
     local tile = {
         tag = "tiles",
+        name = "Tile (" .. tile_x .. ", " .. tile_y .. ")",
         components = {
             transform = {
                 position = { x = tile_x, y = tile_y },

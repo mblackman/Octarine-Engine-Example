@@ -31,6 +31,7 @@ current_level = {
     entities = {
         {
             -- Player
+            name = "Player",
             tag = { "player" },
             entity_mask = 1,
             components = {
@@ -69,7 +70,8 @@ current_level = {
                     repeat_frequency = 0, -- seconds
                     hit_damage = 10,
                     friendly = true,
-                    collision_mask = 2
+                    collision_mask = 2,
+                    projectile_name = "Player Projectile"
                 },
                 keyboard_controller = {
                     velocity = 80
@@ -92,6 +94,7 @@ current_level = {
         {
             -- Tank
             tag = "enemies",
+            name = "Tank",
             entity_mask = 2,
             components = {
                 transform = {
@@ -119,13 +122,15 @@ current_level = {
                     repeat_frequency = 1, -- seconds
                     hit_damage = 20,
                     friendly = false,
-                    collision_mask = 1
+                    collision_mask = 1,
+                    projectile_name = "Tank Projectile"
                 }
             }
         },
         {
             -- Truck
             tag = "enemies",
+            name = "Truck",
             entity_mask = 2,
             components = {
                 transform = {
@@ -153,13 +158,15 @@ current_level = {
                     repeat_frequency = 1, -- seconds
                     hit_damage = 20,
                     friendly = false,
-                    collision_mask = 1
+                    collision_mask = 1,
+                    projectile_name = "Truck Projectile"
                 },
             }
         },
         {
             -- Truck Sin
             tag = "enemies",
+            name = "Truck Sin",
             entity_mask = 2,
             components = {
                 transform = {
@@ -187,7 +194,8 @@ current_level = {
                     repeat_frequency = 1, -- seconds
                     hit_damage = 20,
                     friendly = false,
-                    collision_mask = 1
+                    collision_mask = 1,
+                    projectile_name = "Truck Sin Projectile"
                 },
                 script = {
                     elapsed_time = 0.0,
