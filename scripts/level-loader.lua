@@ -8,7 +8,6 @@ local function create_tile_entity(tile_texture_id, tile_x, tile_y, scale, tile_w
             transform = {
                 position = { x = tile_x, y = tile_y },
                 scale = { x = scale, y = scale },
-                rotation = 0.0,
             },
             sprite = {
                 texture_asset_id = tile_texture_id,
@@ -85,8 +84,6 @@ local function load_level(levelNumber)
                 components = {
                     transform = {
                         position = { x = 0, y = -10 },
-                        scale = { x = 1.0, y = 1.0 },
-                        rotation = 0.0,
                     },
                     text_label = {
                         text = "100%",

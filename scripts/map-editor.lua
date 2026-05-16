@@ -76,7 +76,6 @@ for i=0, edit_grid_num_tiles_high-1 do
                 transform = {
                     position = { x = x_position, y = y_position },
                     scale = { x = edit_grid_scale, y = edit_grid_scale },
-                    rotation = 0.0,
                 },
                 sprite = {
                     texture_asset_id = "tilemap-texture",
@@ -126,8 +125,6 @@ document.entities[index] = {
     components = {
         transform = {
             position = { x = 0, y = edit_grid_height * edit_grid_scale },
-            scale = { x = 1.0, y = 1.0 },
-            rotation = 0.0,
         },
         square = {
             position = { x = 0, y = edit_grid_height * edit_grid_scale },
@@ -153,7 +150,6 @@ for i=0, select_grid_num_tiles_high-1 do
                 transform = {
                     position = { x = x_position, y = y_position },
                     scale = { x = edit_grid_scale, y = edit_grid_scale },
-                    rotation = 0.0,
                 },
                 sprite = {
                     texture_asset_id = "tilemap-texture",

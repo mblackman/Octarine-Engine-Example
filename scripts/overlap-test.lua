@@ -9,8 +9,6 @@ function overlap_test.run()
         components = {
             transform = {
                 position = { x = 100, y = 100 },
-                scale = { x = 1.0, y = 1.0 },
-                rotation = 0.0,
             },
             sprite = {
                 texture_asset_id = "tank-texture",
@@ -35,8 +33,6 @@ function overlap_test.run()
         components = {
             transform = {
                 position = { x = 100, y = 120 },
-                scale = { x = 1.0, y = 1.0 },
-                rotation = 0.0,
             },
             sprite = {
                 texture_asset_id = "tank-texture",

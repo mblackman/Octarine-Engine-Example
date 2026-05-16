@@ -37,8 +37,6 @@ current_level = {
             components = {
                 transform = {
                     position = { x = 242, y = 110 },
-                    scale = { x = 1.0, y = 1.0 },
-                    rotation = 0.0, -- degrees
                 },
                 rigidbody = {
                     velocity = { x = 0.0, y = 0.0 }
@@ -99,8 +97,6 @@ current_level = {
             components = {
                 transform = {
                     position = { x = 200, y = 497 },
-                    scale = { x = 1.0, y = 1.0 },
-                    rotation = 0.0, -- degrees
                 },
                 sprite = {
                     texture_asset_id = "tank-texture",
@@ -135,8 +131,6 @@ current_level = {
             components = {
                 transform = {
                     position = { x = 500, y = 497 },
-                    scale = { x = 1.0, y = 1.0 },
-                    rotation = 0.0, -- degrees
                 },
                 sprite = {
                     texture_asset_id = "truck-texture",
@@ -171,8 +165,6 @@ current_level = {
             components = {
                 transform = {
                     position = { x = 500, y = 250 },
-                    scale = { x = 1.0, y = 1.0 },
-                    rotation = 0.0, -- degrees
                 },
                 sprite = {
                     texture_asset_id = "truck-texture",

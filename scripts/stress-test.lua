@@ -24,8 +24,6 @@ function stress_test.run()
                 components = {
                     transform = {
                         position = { x = i, y = j },
-                        scale = { x = 1.0, y = 1.0 },
-                        rotation = 0.0,
                     },
                     sprite = {
                         texture_asset_id = "tank-texture",
