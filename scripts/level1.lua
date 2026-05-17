@@ -71,9 +71,7 @@ current_level = {
                     collision_mask = 2,
                     projectile_name = "Player Projectile"
                 },
-                keyboard_controller = {
-                    velocity = 80
-                },
+                script = player_controller.new({ velocity = 80, sprite_width = 32, sprite_height = 32 }),
                 camera_follow = {
                     follow = true
                 },
@@ -109,12 +107,13 @@ current_level = {
                 projectile_emitter = {
                     projectile_velocity = { x = 100, y = 0 },
                     projectile_duration = 2, -- seconds
-                    repeat_frequency = 1, -- seconds
+                    repeat_frequency = 1, -- seconds (read by auto_fire script below)
                     hit_damage = 20,
                     friendly = false,
                     collision_mask = 1,
                     projectile_name = "Tank Projectile"
-                }
+                },
+                script = auto_fire.new({ interval = 1.0 })
             }
         },
         {
@@ -143,12 +142,13 @@ current_level = {
                 projectile_emitter = {
                     projectile_velocity = { x = 100, y = 0 },
                     projectile_duration = 2, -- seconds
-                    repeat_frequency = 1, -- seconds
+                    repeat_frequency = 1, -- seconds (read by auto_fire script below)
                     hit_damage = 20,
                     friendly = false,
                     collision_mask = 1,
                     projectile_name = "Truck Projectile"
                 },
+                script = auto_fire.new({ interval = 1.0 }),
             }
         },
         {
@@ -177,26 +177,33 @@ current_level = {
                 projectile_emitter = {
                     projectile_velocity = { x = 100, y = 0 },
                     projectile_duration = 2, -- seconds
-                    repeat_frequency = 1, -- seconds
+                    repeat_frequency = 1, -- seconds (read by auto_fire script below)
                     hit_damage = 20,
                     friendly = false,
                     collision_mask = 1,
                     projectile_name = "Truck Sin Projectile"
                 },
-                script = {
-                    elapsed_time = 0.0,
-                    on_update = function(self, entity, delta_time)
-                        self.elapsed_time = self.elapsed_time + delta_time
-                        -- Need to fix tracking of elapsed time
+                script = (function()
+                    local s = auto_fire.compose({ interval = 1.0 }, function(self, entity, dt)
+                        self.elapsed_time = self.elapsed_time + dt
                         local change = self.elapsed_time * 1000
                         local new_x = change * 0.09
                         local new_y = 200 + (math.sin(change * 0.001) * 50)
                         set_position(entity, new_x, new_y)
-                    end
-                }
+                    end)
+                    s.elapsed_time = 0.0
+                    return s
+                end)()
             }
         }
     }
 }
+
+-- Re-install bindings/callbacks in case this level was entered via load_scene(), which
+-- runs ResetLuaState. install_*() are idempotent — see lib/input_map.lua, lib/spawn.lua.
+current_level.setup = function(scene)
+    input_map.install()
+    spawn.install_click_spawn()
+end
 
 return current_level

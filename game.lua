@@ -91,6 +91,16 @@ function create_debug_gui()
     load_entity(spawn_enemy_gui_entity)
 end
 
+-- Load shared lib modules once. Each sets a global table (input_map, player_controller, spawn).
+dofile(get_asset_path("scripts/lib/input_map.lua"))
+dofile(get_asset_path("scripts/lib/player_controller.lua"))
+dofile(get_asset_path("scripts/lib/auto_fire.lua"))
+dofile(get_asset_path("scripts/lib/spawn.lua"))
+
+-- Game-wide bindings + callbacks. install_*() are idempotent across reload_scene() calls.
+input_map.install()
+spawn.install_click_spawn()
+
 local level_loader_path = get_asset_path("scripts/level-loader.lua")
 dofile(level_loader_path)
 level_loader.load_level(1)

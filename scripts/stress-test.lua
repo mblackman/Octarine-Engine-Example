@@ -46,14 +46,13 @@ function stress_test.run()
                         -- steady state in ~2s — old 120s value never reached steady state in a
                         -- realistic bench window, leaving runs measuring only the ramp.
                         projectile_duration = 2,
-                        repeat_frequency = frequency,
                         hit_damage = 20,
                         friendly = false,
                         collision_mask = 2,
-                        -- Spread the first shot across [0, frequency) to avoid a massive
-                        -- spike of ~2074 entity spawns on a single frame.
-                        countdown_timer = initial_delay
-                    }
+                    },
+                    -- Lua-driven fire loop. initial_delay spreads the first shot across
+                    -- [0, frequency) to avoid a ~2074-spawn spike on frame 0.
+                    script = auto_fire.new({ interval = frequency, initial_delay = initial_delay })
                 }
             }
             load_entity(shooter)
