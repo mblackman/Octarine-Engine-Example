@@ -77,15 +77,9 @@ current_level = {
                 camera_follow = {
                     follow = true
                 },
-                script = {
-                    elapsed_time = 0.0,
-                    on_update = function(self, entity, delta_time) 
-                        self.elapsed_time = self.elapsed_time + delta_time
-                        if (self.elapsed_time > 1) then
-                            play_sound("helicopter")
-                            self.elapsed_time = 0
-                        end
-                    end
+                audio_source = { 
+                    clip_id = "helicopter", 
+                    loop = true 
                 }
             }
         },
