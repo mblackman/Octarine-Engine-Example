@@ -82,13 +82,54 @@ function spawn_enemy_gui(self, entity)
     ImGui.End()
 end
 
+-- Live transform inspector for the Player. Exercises the new Lua bindings:
+--   registry.has_position / get_position
+--   registry.has_rotation / get_rotation
+--   registry.has_scale    / get_scale
+-- Mutations write straight back into the component via the usertype's `value` field.
+function player_transform_gui(self, entity)
+    if (ImGui.Begin("Player Transform")) then
+        local player = find_entity_by_name("Player")
+        if player == nil then
+            ImGui.Text("No player entity loaded.")
+        else
+            if registry.has_position(player) then
+                local pos = registry.get_position(player)
+                pos.value.x = ImGui.InputFloat("Pos X", pos.value.x)
+                pos.value.y = ImGui.InputFloat("Pos Y", pos.value.y)
+            end
+            if registry.has_rotation(player) then
+                local rot = registry.get_rotation(player)
+                local deg = math.deg(rot.value)
+                deg = ImGui.SliderFloat("Rotation (deg)", deg, -180.0, 180.0)
+                rot.value = math.rad(deg)
+            else
+                ImGui.Text("Player has no rotation component.")
+            end
+            if registry.has_scale(player) then
+                local scl = registry.get_scale(player)
+                local s = ImGui.SliderFloat("Uniform Scale", scl.value.x, 0.25, 4.0)
+                scl.value.x = s
+                scl.value.y = s
+            else
+                ImGui.Text("Player has no scale component.")
+            end
+        end
+    end
+    ImGui.End()
+end
+
 function create_debug_gui()
     log("Creating debug GUI...")
     spawn_enemy_gui_entity = {
         components = { script = { on_debug_gui = spawn_enemy_gui } }
     }
+    player_transform_gui_entity = {
+        components = { script = { on_debug_gui = player_transform_gui } }
+    }
 
     load_entity(spawn_enemy_gui_entity)
+    load_entity(player_transform_gui_entity)
 end
 
 -- Load shared lib modules once. Each sets a global table (input_map, player_controller, spawn).
@@ -96,6 +137,8 @@ dofile(get_asset_path("scripts/lib/input_map.lua"))
 dofile(get_asset_path("scripts/lib/player_controller.lua"))
 dofile(get_asset_path("scripts/lib/auto_fire.lua"))
 dofile(get_asset_path("scripts/lib/spawn.lua"))
+dofile(get_asset_path("scripts/lib/health_label.lua"))
+dofile(get_asset_path("scripts/lib/spinner.lua"))
 
 -- Game-wide bindings + callbacks. install_*() are idempotent across reload_scene() calls.
 input_map.install()

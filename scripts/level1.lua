@@ -37,6 +37,8 @@ current_level = {
             components = {
                 transform = {
                     position = { x = 242, y = 110 },
+                    scale    = { x = 1.0, y = 1.0 },
+                    rotation = 0.0,
                 },
                 rigidbody = {
                     velocity = { x = 0.0, y = 0.0 }
@@ -194,6 +196,114 @@ current_level = {
                     s.elapsed_time = 0.0
                     return s
                 end)()
+            }
+        },
+        -- Rotation showcase entities. Demonstrate rotated sprite, rotated colliders,
+        -- and rotated square primitives. Use the new registry.get_rotation / get_scale
+        -- bindings via lib/spinner.lua.
+        {
+            -- Spinning tank: rotates continuously; box collider rotates with it (OBB SAT
+            -- in CollisionSystem). Hit it with a player projectile to confirm.
+            tag = "enemies",
+            name = "Spinning Tank",
+            entity_mask = 2,
+            components = {
+                transform = {
+                    position = { x = 320, y = 300 },
+                    rotation = 0.0,
+                },
+                sprite = {
+                    texture_asset_id = "tank-texture",
+                    width = 32,
+                    height = 32,
+                    layer = 2
+                },
+                box_collider = {
+                    width = 32,
+                    height = 32,
+                    offset = { x = 0, y = 0 }
+                },
+                health = { max_health = 60 },
+                script = spinner.new({ speed = 1.5 })
+            }
+        },
+        {
+            -- Pulsing truck: rotates AND breathes in scale every frame. Showcases the
+            -- mutating scale binding (registry.get_scale(e).value.x = ...).
+            tag = "enemies",
+            name = "Pulsing Truck",
+            entity_mask = 2,
+            components = {
+                transform = {
+                    position = { x = 420, y = 300 },
+                    scale    = { x = 1.0, y = 1.0 },
+                    rotation = 0.0,
+                },
+                sprite = {
+                    texture_asset_id = "truck-texture",
+                    width = 32,
+                    height = 32,
+                    layer = 2
+                },
+                box_collider = {
+                    width = 32,
+                    height = 32,
+                    offset = { x = 0, y = 0 }
+                },
+                health = { max_health = 60 },
+                script = spinner.new({ speed = 1.0, pulse = 0.35, base_scale = 1.0 })
+            }
+        },
+        {
+            -- Static rotated block: square primitive frozen at 30deg. Verifies rotated
+            -- SDL_RenderGeometry path and that DrawColliderSystem traces the OBB.
+            tag = "obstacle",
+            name = "Static Rotated Block",
+            entity_mask = 2,
+            components = {
+                transform = {
+                    position = { x = 520, y = 280 },
+                    rotation = math.rad(30),
+                },
+                square = {
+                    width = 48,
+                    height = 24,
+                    color = { r = 255, g = 200, b = 80, a = 255 },
+                    layer = 1,
+                    fixed = false
+                },
+                box_collider = {
+                    width = 48,
+                    height = 24,
+                    offset = { x = 0, y = 0 }
+                }
+            }
+        },
+        {
+            -- Spinning block: square primitive driven by the spinner script. Rotates
+            -- through its rest position so the OBB-vs-OBB collision path lights up
+            -- when the static block is nearby.
+            tag = "obstacle",
+            name = "Spinning Block",
+            entity_mask = 2,
+            components = {
+                transform = {
+                    position = { x = 620, y = 280 },
+                    rotation = 0.0,
+                },
+                square = {
+                    width = 48,
+                    height = 24,
+                    color = { r = 80, g = 200, b = 255, a = 255 },
+                    layer = 1,
+                    fixed = false
+                },
+                box_collider = {
+                    width = 48,
+                    height = 24,
+                    offset = { x = 0, y = 0 }
+                },
+                script = spinner.new({ speed = 2.0 })
             }
         }
     }
