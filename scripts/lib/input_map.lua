@@ -12,7 +12,7 @@ end
 local function register_global_callbacks()
     -- Wheel-delta trace. Replace with camera zoom once a camera binding exists.
     input.on_mouse_wheel(function(dx, dy)
-        if dx ~= 0 or dy ~= 0 then log("wheel " .. dx .. "," .. dy) end
+        -- if dx ~= 0 or dy ~= 0 then log("wheel " .. dx .. "," .. dy) end
     end)
 end
 
