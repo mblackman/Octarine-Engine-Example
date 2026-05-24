@@ -30,10 +30,9 @@ local function load_level(levelNumber)
     log("Loading level script: " .. level_path)
     dofile(level_path)
 
-    local assets = current_level.assets
-    for _, v in ipairs(assets) do
-        load_asset(v)
-    end
+    -- Derive + load this level's assets from its data (tilemap + entity sprites/fonts) unioned
+    -- with the explicit `preload` list. Replaces the old hand-written load_asset loop.
+    acquire_scene_assets(current_level)
 
     -- Load tilemap
     local tilemap = current_level.tilemap

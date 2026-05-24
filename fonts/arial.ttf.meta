@@ -1,0 +1,6 @@
+-- Engine default would derive "arial-16"; the scenes reference "arial-font-<size>", so remap the
+-- id base and bake the two sizes the game actually uses.
+return {
+  id = "arial-font",
+  sizes = { 5, 10 },
+}

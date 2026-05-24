@@ -1,17 +1,19 @@
 -- Define a table with the values of the first level
 current_level = {
     ----------------------------------------------------
-    -- Table to define the list of assets
+    -- Assets are auto-discovered from the project folder (see the .meta sidecars next to the
+    -- image/font files) and the required set is derived from this scene's data by the engine's
+    -- scene scanner. `preload` lists only what the static scan cannot see: runtime spawns
+    -- (enemy tanks/trucks, bullets) and the load-time-injected health label font. The tilemap
+    -- texture and the Player sprite are picked up automatically from `tilemap` / `entities`.
     ----------------------------------------------------
-    assets = {
-        { type = "texture", id = "tilemap-texture", file = "tilemaps/jungle.png" },
-        { type = "texture", id = "chopper-texture", file = "images/chopper-spritesheet.png" },
-        { type = "texture", id = "tank-texture",    file = "images/tank-tiger-up.png" },
-        { type = "texture", id = "truck-texture",    file = "images/truck-ford-up.png" },
-        { type = "texture", id = "bullet-texture",  file = "images/bullet.png" },
-        { type = "font"   , id = "arial-font-5",    file = "fonts/arial.ttf", font_size = 5 },
-        { type = "font"   , id = "arial-font-10",   file = "fonts/arial.ttf", font_size = 10 },
-        { type = "audio_clip"   , id = "helicopter",   file = "sounds/helicopter.wav" }
+    preload = {
+        "tank-texture",    -- spawned enemies (game.lua spawn_enemy_gui)
+        "truck-texture",   -- spawned enemies
+        "bullet-texture",  -- fired projectiles
+        "arial-font-5",    -- runtime labels
+        "arial-font-10",   -- load-time-injected health label (level-loader.lua)
+        "helicopter",      -- audio played on spawn
     },
 
     ----------------------------------------------------
