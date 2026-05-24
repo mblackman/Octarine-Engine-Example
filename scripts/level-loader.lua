@@ -99,7 +99,8 @@ local function load_level(levelNumber)
                         color = { r = 255, g = 0, b = 0, a = 255 },
                         fixed = false,
                         layer = 5
-                    }
+                    },
+                    script = health_label.new()
                 }
             }
         }
