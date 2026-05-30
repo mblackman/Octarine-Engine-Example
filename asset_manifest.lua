@@ -8,6 +8,7 @@ return {
   ["chopper"] = { type = "texture", file = "images/chopper.png", scale_mode = "nearest" },
   ["chopper-texture"] = { type = "texture", file = "images/chopper-spritesheet.png", scale_mode = "nearest" },
   ["helicopter"] = { type = "audio_clip", file = "sounds/helicopter.wav", stream = false },
+  ["icon"] = { type = "texture", file = "images/icon.png", scale_mode = "nearest" },
   ["landing-base"] = { type = "texture", file = "images/landing-base.png", scale_mode = "nearest" },
   ["radar"] = { type = "texture", file = "images/radar.png", scale_mode = "nearest" },
   ["takeoff-base"] = { type = "texture", file = "images/takeoff-base.png", scale_mode = "nearest" },
