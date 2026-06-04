@@ -36,9 +36,15 @@ function stress_test.run()
                         height = 32,
                         offset = { x = 0, y = 0 }
                     },
+                    -- Effectively invulnerable. Shooters sit on a grid and their own projectiles
+                    -- overlap neighbours, so normal (100hp) health makes them shoot each other to
+                    -- death within ~2s and the scene collapses (render/collision load decays to
+                    -- near zero). A huge health pool keeps the HealthComponent type registered (so
+                    -- the collision-damage path stays valid) while ensuring nothing dies in a bench
+                    -- window — the population holds the intended steady state the whole run.
                     health = {
-                        max_health = 100,
-                        current_health = 100
+                        max_health = 1000000000,
+                        current_health = 1000000000
                     },
                     projectile_emitter = {
                         projectile_velocity = { x = math.random(-100, 100), y = math.random(-100, 100) },

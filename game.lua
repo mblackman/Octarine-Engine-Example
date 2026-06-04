@@ -144,6 +144,14 @@ dofile(get_asset_path("scripts/lib/spinner.lua"))
 input_map.install()
 spawn.install_click_spawn()
 
-local level_loader_path = get_asset_path("scripts/level-loader.lua")
-dofile(level_loader_path)
-level_loader.load_level(1)
+-- Scene selection. The engine passes the process --startup-mode through as the global
+-- `oct_startup_mode`; "stress" loads the deterministic benchmark grid (scripts/stress-test.lua),
+-- anything else (incl. nil / "main") loads the normal level 1.
+if oct_startup_mode == "stress" then
+    local stress_test = dofile(get_asset_path("scripts/stress-test.lua"))
+    stress_test.run()
+else
+    local level_loader_path = get_asset_path("scripts/level-loader.lua")
+    dofile(level_loader_path)
+    level_loader.load_level(1)
+end
