@@ -111,13 +111,13 @@ current_level = {
                 projectile_emitter = {
                     projectile_velocity = { x = 100, y = 0 },
                     projectile_duration = 2, -- seconds
-                    repeat_frequency = 1, -- seconds (read by auto_fire script below)
+                    repeat_frequency = 1, -- seconds — drives the engine ProjectileEmitSystem auto-fire
                     hit_damage = 20,
                     friendly = false,
                     collision_mask = 1,
                     projectile_name = "Tank Projectile"
-                },
-                script = auto_fire.new({ interval = 1.0 })
+                }
+                -- Auto-fire runs engine-side now (repeat_frequency above); no Lua fire loop needed.
             }
         },
         {
@@ -146,13 +146,13 @@ current_level = {
                 projectile_emitter = {
                     projectile_velocity = { x = 100, y = 0 },
                     projectile_duration = 2, -- seconds
-                    repeat_frequency = 1, -- seconds (read by auto_fire script below)
+                    repeat_frequency = 1, -- seconds — drives the engine ProjectileEmitSystem auto-fire
                     hit_damage = 20,
                     friendly = false,
                     collision_mask = 1,
                     projectile_name = "Truck Projectile"
-                },
-                script = auto_fire.new({ interval = 1.0 }),
+                }
+                -- Auto-fire runs engine-side now (repeat_frequency above); no Lua fire loop needed.
             }
         },
         {
@@ -181,23 +181,25 @@ current_level = {
                 projectile_emitter = {
                     projectile_velocity = { x = 100, y = 0 },
                     projectile_duration = 2, -- seconds
-                    repeat_frequency = 1, -- seconds (read by auto_fire script below)
+                    repeat_frequency = 1, -- seconds — drives the engine ProjectileEmitSystem auto-fire
                     hit_damage = 20,
                     friendly = false,
                     collision_mask = 1,
                     projectile_name = "Truck Sin Projectile"
                 },
-                script = (function()
-                    local s = auto_fire.compose({ interval = 1.0 }, function(self, entity, dt)
+                -- Movement-only script: auto-fire now runs engine-side (repeat_frequency above),
+                -- so this drives just the sinusoidal path. Demonstrates scripted movement
+                -- composing with C++ auto-fire on the same entity.
+                script = {
+                    elapsed_time = 0.0,
+                    on_update = function(self, entity, dt)
                         self.elapsed_time = self.elapsed_time + dt
                         local change = self.elapsed_time * 1000
                         local new_x = change * 0.09
                         local new_y = 200 + (math.sin(change * 0.001) * 50)
                         set_position(entity, new_x, new_y)
-                    end)
-                    s.elapsed_time = 0.0
-                    return s
-                end)()
+                    end
+                }
             }
         },
         -- Rotation showcase entities. Demonstrate rotated sprite, rotated colliders,
