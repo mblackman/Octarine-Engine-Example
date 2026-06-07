@@ -6,10 +6,12 @@ demo_hud = {}
 
 function demo_hud.install(title, body)
     hub_button.make({
-        x = 20, y = 20, w = 180, h = 48,
-        label = "< Hub",
-        on_click = function()
-            load_scene("scripts/hub.lua")
+        x          = 20, y = 20, w = 180, h = 48,
+        label      = "< Hub",
+        scene_path = "scripts/hub.lua",
+        on_click   = function(self)
+            self.is_active = false
+            load_scene(self.scene_path)
         end,
     })
 

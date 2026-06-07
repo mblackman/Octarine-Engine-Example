@@ -12,14 +12,19 @@ function hub_button.make(opts)
     local label = opts.label or "Button"
     local click = opts.on_click
 
-    -- Button body: colored square + hit region + click handler
+    -- Button body: colored square + hit region + click handler.
+    -- scene_path is forwarded into the ui_button table so on_click can read
+    -- it via `self` (the buttonTable the system passes as the first arg) instead
+    -- of relying on a Lua closure upvalue. The handler also sets is_active=false
+    -- on itself before navigating, which prevents the ECS ForEach from re-firing
+    -- the same button if scene loading happens synchronously mid-iteration.
     load_entity({
         name = "btn_" .. label,
         components = {
             transform    = { position = { x = x, y = y }, scale = { x = 1, y = 1 } },
             square       = { width = w, height = h, color = { r = 40, g = 80, b = 160, a = 220 }, layer = 10, fixed = true },
             box_collider = { width = w, height = h, offset = { x = 0, y = 0 } },
-            ui_button    = { is_active = true, is_fixed = true, on_click = click },
+            ui_button    = { is_active = true, is_fixed = true, scene_path = opts.scene_path, on_click = click },
         },
     })
 

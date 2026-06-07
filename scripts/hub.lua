@@ -63,12 +63,13 @@ local demos = {
 
 for i, demo in ipairs(demos) do
     local by = start_y + (i - 1) * gap
-    local path = demo.path
     hub_button.make({
-        x = btn_x, y = by, w = btn_w, h = btn_h,
-        label = demo.label,
-        on_click = function()
-            load_scene(path)
+        x          = btn_x, y = by, w = btn_w, h = btn_h,
+        label      = demo.label,
+        scene_path = demo.path,
+        on_click   = function(self)
+            self.is_active = false      -- prevent re-fire if ForEach continues post-load
+            load_scene(self.scene_path)
         end,
     })
     load_entity({
