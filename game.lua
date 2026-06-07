@@ -67,7 +67,7 @@ function spawn_enemy_gui(self, entity)
                         current_health = debug_starting_health
                     },
                     projectile_emitter = {
-                        projectile_velocity = { x = math.cos(math.rad(debug_projectile_angle)) * debug_projectile_speed, 
+                        projectile_velocity = { x = math.cos(math.rad(debug_projectile_angle)) * debug_projectile_speed,
                                                 y = math.sin(math.rad(debug_projectile_angle)) * debug_projectile_speed },
                         projectile_duration = debug_projectile_duration,
                         repeat_frequency = debug_projectile_frequency,
@@ -146,7 +146,9 @@ dofile(get_asset_path("scripts/lib/demo_hud.lua"))
 -- install_click_spawn() is deferred to gameplay-demo.lua so it does not fire in the hub.
 input_map.install()
 
--- Scene selection. The engine exposes --startup-mode as the global `oct_startup_mode`.
+-- Scene selection. The engine passes the process --startup-mode through as the global
+-- `oct_startup_mode`; "stress" loads the deterministic benchmark grid (scripts/stress-test.lua),
+-- anything else (incl. nil / "main") loads the hub showcase menu.
 if oct_startup_mode == "stress" then
     local stress_test = dofile(get_asset_path("scripts/stress-test.lua"))
     stress_test.run()

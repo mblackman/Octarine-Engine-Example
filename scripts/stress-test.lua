@@ -36,9 +36,15 @@ function stress_test.run()
                         height = 32,
                         offset = { x = 0, y = 0 }
                     },
+                    -- Effectively invulnerable. Shooters sit on a grid and their own projectiles
+                    -- overlap neighbours, so normal (100hp) health makes them shoot each other to
+                    -- death within ~2s and the scene collapses (render/collision load decays to
+                    -- near zero). A huge health pool keeps the HealthComponent type registered (so
+                    -- the collision-damage path stays valid) while ensuring nothing dies in a bench
+                    -- window — the population holds the intended steady state the whole run.
                     health = {
-                        max_health = 100,
-                        current_health = 100
+                        max_health = 1000000000,
+                        current_health = 1000000000
                     },
                     projectile_emitter = {
                         projectile_velocity = { x = math.random(-100, 100), y = math.random(-100, 100) },
@@ -49,10 +55,15 @@ function stress_test.run()
                         hit_damage = 20,
                         friendly = false,
                         collision_mask = 2,
+                        -- Engine-side auto-fire (perf W1): the C++ ProjectileEmitSystem ticks this
+                        -- emitter every repeat_frequency seconds and spawns a projectile, replacing
+                        -- the per-entity auto_fire.lua loop (one sol2 call per shooter per frame).
+                        -- countdown_timer seeds the first shot across [0, frequency) so the grid
+                        -- doesn't spawn ~2074 projectiles on frame 0 — the stagger the Lua
+                        -- initial_delay used to provide.
+                        repeat_frequency = frequency,
+                        countdown_timer = initial_delay,
                     },
-                    -- Lua-driven fire loop. initial_delay spreads the first shot across
-                    -- [0, frequency) to avoid a ~2074-spawn spike on frame 0.
-                    script = auto_fire.new({ interval = frequency, initial_delay = initial_delay })
                 }
             }
             load_entity(shooter)
