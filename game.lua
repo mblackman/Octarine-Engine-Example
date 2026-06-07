@@ -67,7 +67,7 @@ function spawn_enemy_gui(self, entity)
                         current_health = debug_starting_health
                     },
                     projectile_emitter = {
-                        projectile_velocity = { x = math.cos(math.rad(debug_projectile_angle)) * debug_projectile_speed, 
+                        projectile_velocity = { x = math.cos(math.rad(debug_projectile_angle)) * debug_projectile_speed,
                                                 y = math.sin(math.rad(debug_projectile_angle)) * debug_projectile_speed },
                         projectile_duration = debug_projectile_duration,
                         repeat_frequency = debug_projectile_frequency,
@@ -132,26 +132,26 @@ function create_debug_gui()
     load_entity(player_transform_gui_entity)
 end
 
--- Load shared lib modules once. Each sets a global table (input_map, player_controller, spawn).
+-- Load shared lib modules once. Each sets a global table (input_map, player_controller, spawn, …).
+-- Globals survive load_scene() calls so every demo scene can use them without re-dofile.
 dofile(get_asset_path("scripts/lib/input_map.lua"))
 dofile(get_asset_path("scripts/lib/player_controller.lua"))
 dofile(get_asset_path("scripts/lib/auto_fire.lua"))
 dofile(get_asset_path("scripts/lib/spawn.lua"))
 dofile(get_asset_path("scripts/lib/health_label.lua"))
 dofile(get_asset_path("scripts/lib/spinner.lua"))
+dofile(get_asset_path("scripts/lib/hub_button.lua"))
+dofile(get_asset_path("scripts/lib/demo_hud.lua"))
 
--- Game-wide bindings + callbacks. install_*() are idempotent across reload_scene() calls.
+-- install_click_spawn() is deferred to gameplay-demo.lua so it does not fire in the hub.
 input_map.install()
-spawn.install_click_spawn()
 
 -- Scene selection. The engine passes the process --startup-mode through as the global
 -- `oct_startup_mode`; "stress" loads the deterministic benchmark grid (scripts/stress-test.lua),
--- anything else (incl. nil / "main") loads the normal level 1.
+-- anything else (incl. nil / "main") loads the hub showcase menu.
 if oct_startup_mode == "stress" then
     local stress_test = dofile(get_asset_path("scripts/stress-test.lua"))
     stress_test.run()
 else
-    local level_loader_path = get_asset_path("scripts/level-loader.lua")
-    dofile(level_loader_path)
-    level_loader.load_level(1)
+    load_scene("scripts/hub.lua")
 end

@@ -2,12 +2,15 @@
 -- Maps asset id -> { type, file (relative to the asset root), metadata }.
 return {
   ["arial-font-10"] = { type = "font", file = "fonts/arial.ttf", font_size = 10 },
+  ["arial-font-10.atlas"] = { type = "texture", file = "atlases/arial-font-10.atlas.png", scale_mode = "nearest" },
   ["arial-font-5"] = { type = "font", file = "fonts/arial.ttf", font_size = 5 },
+  ["arial-font-5.atlas"] = { type = "texture", file = "atlases/arial-font-5.atlas.png", scale_mode = "nearest" },
   ["bullet-texture"] = { type = "texture", file = "images/bullet.png", scale_mode = "nearest" },
   ["charriot-16"] = { type = "font", file = "fonts/charriot.ttf", font_size = 16 },
+  ["charriot-16.atlas"] = { type = "texture", file = "atlases/charriot-16.atlas.png", scale_mode = "nearest" },
   ["chopper"] = { type = "texture", file = "images/chopper.png", scale_mode = "nearest" },
   ["chopper-texture"] = { type = "texture", file = "images/chopper-spritesheet.png", scale_mode = "nearest" },
-  ["helicopter"] = { type = "audio_clip", file = "sounds/helicopter.wav", stream = false },
+  ["helicopter"] = { type = "audio_clip", file = "sounds/helicopter.wav", stream = false, normalize = false },
   ["icon"] = { type = "texture", file = "images/icon.png", scale_mode = "nearest" },
   ["landing-base"] = { type = "texture", file = "images/landing-base.png", scale_mode = "nearest" },
   ["radar"] = { type = "texture", file = "images/radar.png", scale_mode = "nearest" },
