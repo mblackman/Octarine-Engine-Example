@@ -67,8 +67,9 @@ for i, demo in ipairs(demos) do
         x          = btn_x, y = by, w = btn_w, h = btn_h,
         label      = demo.label,
         scene_path = demo.path,
-        on_click   = function(self)
-            self.is_active = false      -- prevent re-fire if ForEach continues post-load
+        on_click   = function(self, entity)
+            local btn = registry.get_ui_button(entity)
+            if btn then btn.is_active = false end
             load_scene(self.scene_path)
         end,
     })

@@ -19,7 +19,27 @@ load_entity({
         square        = { width = 28, height = 28, color = { r = 60, g = 200, b = 80, a = 255 }, layer = 4, fixed = false },
         box_collider  = { width = 28, height = 28, offset = { x = 0, y = 0 } },
         audio_listener = { max_distance = 900, rolloff = 1.0, doppler_factor = 0.0 },
-        script         = player_controller.new({ velocity = 180, sprite_width = 28, sprite_height = 28 }),
+        script         = {
+            on_update = function(self, entity, dt)
+                local dx, dy = 0, 0
+                if input.is_action_down("move_up")    then dy = dy - 1 end
+                if input.is_action_down("move_down")  then dy = dy + 1 end
+                if input.is_action_down("move_left")  then dx = dx - 1 end
+                if input.is_action_down("move_right") then dx = dx + 1 end
+                if dx ~= 0 or dy ~= 0 then
+                    local len = math.sqrt(dx * dx + dy * dy)
+                    local pos = get_position(entity)
+                    local dim = get_game_map_dimensions()
+                    local nx = pos.x + dx / len * 180 * dt
+                    local ny = pos.y + dy / len * 180 * dt
+                    if nx < 0 then nx = 0 end
+                    if ny < 0 then ny = 0 end
+                    if dim.x > 0 and nx + 28 > dim.x then nx = dim.x - 28 end
+                    if dim.y > 0 and ny + 28 > dim.y then ny = dim.y - 28 end
+                    set_position(entity, nx, ny)
+                end
+            end
+        },
         camera_follow  = { follow = true },
     }
 })

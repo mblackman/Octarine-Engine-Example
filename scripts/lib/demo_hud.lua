@@ -9,8 +9,9 @@ function demo_hud.install(title, body)
         x          = 20, y = 20, w = 180, h = 48,
         label      = "< Hub",
         scene_path = "scripts/hub.lua",
-        on_click   = function(self)
-            self.is_active = false
+        on_click   = function(self, entity)
+            local btn = registry.get_ui_button(entity)
+            if btn then btn.is_active = false end
             load_scene(self.scene_path)
         end,
     })
