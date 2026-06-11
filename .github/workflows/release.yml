@@ -49,7 +49,7 @@ jobs:
 
       - name: Download engine (player build)
         id: engine-sdk
-        uses: mblackman/Octarine-Engine/.github/actions/setup-engine@v0.1.0
+        uses: mblackman/Octarine-Engine/.github/actions/setup-engine@main
         with:
           engine-version: ${{ steps.engine.outputs.version }}
           flavor: player
