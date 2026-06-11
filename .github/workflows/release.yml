@@ -1,0 +1,147 @@
+name: Release
+
+# Build and publish a game release package for each platform on version tag pushes.
+# Each leg downloads the engine player-release SDK binary for its platform (no build
+# from source required), bakes the asset manifest, then packages engine + game dir
+# into a self-contained archive and uploads it as a GitHub Release asset.
+#
+# The engine version to pull is read from project.ini (engine_version key) so the
+# declared version and the downloaded binary stay in sync without manual edits to
+# this workflow.
+on:
+  workflow_dispatch:
+  push:
+    tags: [ 'v*' ]
+
+jobs:
+  release:
+    name: ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+            ext: tar.gz
+          - os: windows-latest
+            platform: windows
+            ext: zip
+          - os: macos-latest
+            platform: macos
+            ext: tar.gz
+
+    steps:
+      - name: Checkout game project
+        uses: actions/checkout@v4
+
+      - name: Read engine version from project.ini
+        id: engine
+        shell: bash
+        run: |
+          ver=$(grep -E '^engine_version\s*=' project.ini | sed 's/.*=\s*//' | tr -d '[:space:]')
+          if [ -z "$ver" ]; then
+            echo "engine_version not found in project.ini" >&2
+            exit 1
+          fi
+          echo "version=$ver" >> "$GITHUB_OUTPUT"
+          echo "Engine version: $ver"
+
+      - name: Download engine (player build)
+        uses: mblackman/Octarine-Engine/.github/actions/setup-engine@v0.1.0
+        with:
+          engine-version: ${{ steps.engine.outputs.version }}
+          flavor: player
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Bake asset manifest
+        shell: bash
+        run: OctarineEngine . -m bake
+
+      - name: Stage game package (Linux / macOS)
+        if: matrix.platform != 'windows'
+        shell: bash
+        run: |
+          game_ver="${GITHUB_REF#refs/tags/v}"
+          pkg="OctarineEngine-Example-${game_ver}-${{ matrix.platform }}"
+          mkdir -p "$pkg"
+          # Engine binary
+          cp "$(which OctarineEngine)" "$pkg/"
+          # Game project files (exclude git metadata and editor scratch)
+          rsync -a --exclude='.git' --exclude='.github' --exclude='*.meta' \
+            --exclude='editor_prefs.ini' --exclude='preferences.ini' \
+            --exclude='imgui.ini' \
+            ./ "$pkg/"
+          tar -czf "${pkg}.tar.gz" "$pkg/"
+          echo "pkg_file=${pkg}.tar.gz" >> "$GITHUB_ENV"
+
+      - name: Stage game package (Windows)
+        if: matrix.platform == 'windows'
+        shell: pwsh
+        run: |
+          $gameVer = $env:GITHUB_REF -replace 'refs/tags/v', ''
+          $pkg = "OctarineEngine-Example-${gameVer}-windows"
+          New-Item -ItemType Directory -Force -Path $pkg | Out-Null
+          # Engine binary
+          $engineBin = (Get-Command OctarineEngine.exe).Source
+          Copy-Item $engineBin "$pkg\"
+          # Game project files
+          $exclude = @('.git', '.github', '*.meta', 'editor_prefs.ini',
+                       'preferences.ini', 'imgui.ini')
+          Get-ChildItem -Force | Where-Object {
+            $name = $_.Name
+            -not ($exclude | Where-Object { $name -like $_ })
+          } | Copy-Item -Destination "$pkg\" -Recurse -Force
+          Compress-Archive -Path "$pkg\*" -DestinationPath "${pkg}.zip" -Force
+          "pkg_file=${pkg}.zip" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: OctarineEngine-Example-${{ matrix.platform }}
+          path: OctarineEngine-Example-*.${{ matrix.ext }}
+          if-no-files-found: error
+
+  publish:
+    name: Publish GitHub Release
+    needs: release
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download all platform packages
+        uses: actions/download-artifact@v4
+        with:
+          pattern: OctarineEngine-Example-*
+          merge-multiple: false
+          path: release-assets/
+
+      - name: Collect and list assets
+        shell: bash
+        run: |
+          assets=()
+          for dir in release-assets/OctarineEngine-Example-*/; do
+            f=$(ls "$dir" | head -n 1)
+            cp "$dir/$f" "$f"
+            assets+=("$f")
+          done
+          echo "--- release assets ---"
+          ls -lh OctarineEngine-Example-*
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          version="${GITHUB_REF#refs/tags/v}"
+          assets=()
+          for f in OctarineEngine-Example-*; do
+            [ -f "$f" ] && assets+=("$f")
+          done
+          gh release create "$GITHUB_REF_NAME" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "Octarine Engine Example v${version}" \
+            --generate-notes \
+            "${assets[@]}"
