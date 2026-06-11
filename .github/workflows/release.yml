@@ -87,7 +87,7 @@ jobs:
                        'preferences.ini', 'imgui.ini')
           Get-ChildItem -Force | Where-Object {
             $name = $_.Name
-            -not ($exclude | Where-Object { $name -like $_ })
+            $name -ne $pkg -and -not ($exclude | Where-Object { $name -like $_ })
           } | Copy-Item -Destination "$pkg\" -Recurse -Force
           Compress-Archive -Path "$pkg\*" -DestinationPath "${pkg}.zip" -Force
 
