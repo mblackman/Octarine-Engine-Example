@@ -48,6 +48,7 @@ jobs:
           echo "Engine version: $ver"
 
       - name: Download engine (player build)
+        id: engine-sdk
         uses: mblackman/Octarine-Engine/.github/actions/setup-engine@v0.1.0
         with:
           engine-version: ${{ steps.engine.outputs.version }}
@@ -79,7 +80,7 @@ jobs:
           $gameVer = $env:GITHUB_REF -replace 'refs/tags/v', ''
           $pkg = "OctarineEngine-Example-${gameVer}-windows"
           New-Item -ItemType Directory -Force -Path $pkg | Out-Null
-          $engineBin = (Get-Command OctarineEngine.exe).Source
+          $engineBin = "${{ steps.engine-sdk.outputs.engine-bin }}"
           Copy-Item $engineBin "$pkg\"
           $exclude = @('.git', '.github', '*.meta', 'editor_prefs.ini',
                        'preferences.ini', 'imgui.ini')
