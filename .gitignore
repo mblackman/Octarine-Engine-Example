@@ -5,3 +5,6 @@ preferences.ini
 # asset_manifest.lua (bake output) is now committed: device/shipped builds (Android/iOS) require it,
 # and the OCTARINE_SHIPPED gate means a committed manifest no longer freezes dev `-p` runs (those
 # always rescan). Regenerate with `OctarineEngine <project> -m bake` after adding/renaming assets.
+
+# Editor/source backups - never ship; the engine packaging also excludes these from builds.
+*.bak
